@@ -29,18 +29,18 @@ struct SignInView: View {
                         .padding()
                         .padding(.horizontal, 32)
                     
-                                }
-                        HStack{
-                            Spacer()
-                NavigationLink(destination: ForgotPassword()
-                               ,label: {
-                                Text("Forgot password")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundColor(.gray)
-                                    .padding(.top)
-                                    .padding(.trailing, 28)
-                })
-                        }.padding(.horizontal, 14)
+                }
+                HStack{
+                    Spacer()
+                    NavigationLink(destination: ForgotPassword()
+                                   ,label: {
+                        Text("Forgot password")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(.gray)
+                            .padding(.top)
+                            .padding(.trailing, 28)
+                    })
+                }.padding(.horizontal, 14)
                 
                 Button(action: {
                     
@@ -54,10 +54,9 @@ struct SignInView: View {
                         .padding()
                 })
                 
-                
                 Spacer()
-                NavigationLink(destination: RegisterView()
-                               , label: {
+                
+                NavigationLink(destination: RegisterView(), label: {
                     HStack{
                         Text("Don't have an account?")
                             .font(.system(size: 14, weight: .semibold))

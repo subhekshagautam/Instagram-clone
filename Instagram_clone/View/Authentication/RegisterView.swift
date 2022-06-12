@@ -49,6 +49,7 @@ struct RegisterView: View {
                         .padding()
                 })
                 Spacer()
+                
                NavigationLink(destination: SignInView()
                               , label: {
                    HStack{
