@@ -12,6 +12,8 @@ struct RegisterView: View {
     @State var userName = ""
     @State var fullName = ""
     @State var Password = ""
+    @EnvironmentObject var viewModel: AuthViewModel
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -29,8 +31,7 @@ struct RegisterView: View {
                         .padding()
                         .padding(.horizontal,32)
                     CustomTextField(text: $fullName, placeholder: Text("Fullname"), imageName: "person")
-                        .padding()
-                        .padding(.horizontal,32)
+                         .padding(.horizontal,32)
                     CustomSecureField(text: $Password, placeholder: Text("Password"), imageName: "lock")
                         .padding()
                         .padding(.horizontal, 32)
@@ -38,7 +39,7 @@ struct RegisterView: View {
                 }
                 
                 Button(action: {
-                    
+                    viewModel.register(withEmail: email, password: Password)
                 }, label: {
                     Text("Register")
                         .font(.headline)
@@ -50,7 +51,7 @@ struct RegisterView: View {
                 })
                 Spacer()
                 
-               NavigationLink(destination: SignInView()
+               NavigationLink(destination: SignInView().navigationBarHidden(true)
                               , label: {
                    HStack{
                        Text("Already have an account?")
