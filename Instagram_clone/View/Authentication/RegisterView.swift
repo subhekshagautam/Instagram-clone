@@ -26,11 +26,12 @@ struct RegisterView: View {
                 VStack(spacing: -16){
                     CustomTextField(text: $email, placeholder: Text("Email"), imageName: "envelope")
                         .padding()
-                        .padding(.horizontal,32)
+                     .padding(.horizontal,32)
                     CustomTextField(text: $userName, placeholder: Text("Username"), imageName: "person")
                         .padding()
-                        .padding(.horizontal,32)
+                     .padding(.horizontal,32)
                     CustomTextField(text: $fullName, placeholder: Text("Fullname"), imageName: "person")
+                        .padding()
                          .padding(.horizontal,32)
                     CustomSecureField(text: $Password, placeholder: Text("Password"), imageName: "lock")
                         .padding()
@@ -39,7 +40,7 @@ struct RegisterView: View {
                 }
                 
                 Button(action: {
-                    viewModel.register(withEmail: email, password: Password)
+                    viewModel.register(withEmail: email, password: Password, username: userName, fullname: fullName)
                 }, label: {
                     Text("Register")
                         .font(.headline)

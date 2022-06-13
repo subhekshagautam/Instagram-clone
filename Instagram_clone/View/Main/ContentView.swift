@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: AuthViewModel
+    @State var selectedIndex = 0
     var body: some View {
-        RegisterView().environmentObject(AuthViewModel())
+        Group{
+            if viewModel.userSession == nil {
+                SignInView()
+            }
+            else{
+                MainView(selectedIndex: $selectedIndex)
+            }
+        }
     }
 }
 

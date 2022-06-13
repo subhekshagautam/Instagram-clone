@@ -10,9 +10,29 @@ import Firebase
 
 
 class AuthViewModel: ObservableObject {
+    
+    @Published var userSession: Firebase.User?
     static let shared = AuthViewModel()
     
-    func register( withEmail email: String, password: String){
+    init(){
+        userSession = Auth.auth().currentUser
+    }
+    
+    // function used for user login
+    func login(withEmail email: String, password: String){
+        Auth.auth().signIn(withEmail: email, password: password){(result, err) in
+            if let err = err {
+                print(err.localizedDescription)
+                return
+            }
+            
+            guard let user = result?.user else {return}
+            self.userSession = user
+            
+        }
+    }
+    // function used for user registration
+    func register( withEmail email: String, password: String, username: String, fullname: String ){
         //register user in firebase
         Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
             
@@ -21,7 +41,19 @@ class AuthViewModel: ObservableObject {
                 return
             }
             guard let user = result? .user else{return}
-            print(user)
+            
+            let data = ["email": email,
+                        "username": username,
+                        "fullname": fullname,
+                        "uid": user.uid]
+            // storing username and firstname in database
+            Firestore.firestore().collection("users").document(user.uid).setData(data){ err in
+                if let err = err{
+                    print(err.localizedDescription)
+                    return
+                }
+                print("DEBUG: User created")
+            }
         }
     }
     
