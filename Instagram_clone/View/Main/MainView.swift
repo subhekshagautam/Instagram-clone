@@ -52,10 +52,21 @@ struct MainView: View {
                     }.tag(4)
                 
             }.navigationTitle(tabTitle)
+                .navigationBarItems( trailing: logoutButton)
                 .accentColor(.black)
             
         }
     }
+    
+    var logoutButton: some View{
+        Button{
+            AuthViewModel.shared.logout()
+        }label:{
+            Text("log Out")
+                .foregroundColor(.black)
+        }
+    }
+    
     //for navigation title change in all pages
     var tabTitle: String{
         switch selectedIndex{
