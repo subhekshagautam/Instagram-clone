@@ -13,7 +13,7 @@ struct ProfileView: View {
             VStack(spacing: 32){
                 ProfileHeader()
                     .padding()
-                 
+                PostGridView()
             }.padding(.top)
         }
     }

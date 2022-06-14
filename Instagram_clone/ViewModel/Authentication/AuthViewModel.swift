@@ -12,10 +12,12 @@ import Firebase
 class AuthViewModel: ObservableObject {
     
     @Published var userSession: Firebase.User?
+    @Published var currentUser: UserModel?
     static let shared = AuthViewModel()
     
     init(){
         userSession = Auth.auth().currentUser
+        fetchUser()
     }
     
     // function used for user login
@@ -28,6 +30,7 @@ class AuthViewModel: ObservableObject {
             
             guard let user = result?.user else {return}
             self.userSession = user
+            self.fetchUser()
             
         }
     }
@@ -47,11 +50,13 @@ class AuthViewModel: ObservableObject {
                         "fullname": fullname,
                         "uid": user.uid]
             // storing username and firstname in database
-            Firestore.firestore().collection("users").document(user.uid).setData(data){ err in
+            Firestore.firestore().collection("users").document(user.uid).setData(data){ [self] err in
                 if let err = err{
                     print(err.localizedDescription)
                     return
                 }
+                self.userSession = user
+                self.fetchUser()
                 print("DEBUG: User created")
             }
         }
@@ -60,5 +65,20 @@ class AuthViewModel: ObservableObject {
     func logout(){
         self.userSession = nil
         try? Auth.auth().signOut()
-     }  
+    }
+    // fetch user information from database
+    
+    func fetchUser(){
+        guard let uid = userSession?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument {(snap, err) in
+            if let err = err{
+                print(err.localizedDescription)
+                return
+            }
+            guard let user = try? snap?.data(as: UserModel.self) else{return}
+            
+            self.currentUser = user
+            
+        }
+    }
 }
